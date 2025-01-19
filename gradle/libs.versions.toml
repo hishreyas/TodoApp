@@ -1,0 +1,58 @@
+[versions]
+agp = "8.7.3"
+kotlin = "2.0.0"
+coreKtx = "1.15.0"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+appcompat = "1.7.0"
+javapoetVersion = "1.13.0"
+material = "1.12.0"
+activity = "1.10.0"
+constraintlayout = "2.2.0"
+gradlePlugins-ksp = "2.0.0-1.0.22"
+pagingRuntime = "3.3.5"
+roomKtx = "2.6.1"
+retrofit = "2.9.0"
+converterGson = "2.9.0"
+lifecycleRuntimeKtx = "2.8.7"
+daggerHilt = "2.51.1"
+hilt = "1.2.0"
+gradlePlugins-hilt = "2.48"
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "pagingRuntime" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomKtx" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
+androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "roomKtx" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+javapoet = { module = "com.squareup:javapoet", version.ref = "javapoetVersion" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout"}
+androidx-hilt-hiltCommon = { module = "androidx.hilt:hilt-common", version.ref = "hilt" }
+google-dagger-hiltAndroid = { module = "com.google.dagger:hilt-android", version.ref = "daggerHilt" }
+androidx-hilt-hiltCompiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hilt" }
+google-dagger-dagger = { module = "com.google.dagger:dagger", version.ref = "daggerHilt" }
+google-dagger-hiltCompiler = { module = "com.google.dagger:hilt-compiler", version.ref = "daggerHilt" }
+google-dagger-daggerCompiler = { module = "com.google.dagger:dagger-compiler", version.ref = "daggerHilt" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "gradlePlugins-ksp" }
+hilt = { id = "dagger.hilt.android.plugin", version.ref = "gradlePlugins-hilt" }
+kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+
+[bundles]
+hilt = ["androidx-hilt-hiltCommon", "google-dagger-dagger", "google-dagger-hiltAndroid"]
+hiltKapt = ["androidx-hilt-hiltCompiler", "google-dagger-daggerCompiler", "google-dagger-hiltCompiler"]
+

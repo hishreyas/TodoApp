@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">TodoApp</string>
+
+    <string-array name="recurrence_options">
+        <item>None</item>
+        <item>Every 15 minutes</item>
+        <item>Hourly</item>
+        <item>Daily</item>
+    </string-array>
+</resources>
