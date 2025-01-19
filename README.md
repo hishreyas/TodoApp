@@ -7,4 +7,4 @@ The Reminder App allows users to create, edit, delete, and manage reminders loca
 - Create and manage reminders with recurrence options (15 minutes, hourly, daily).
 - Notifications for scheduled reminders with retry and permission handling.
 
-[**Download APK here**](https://github.com/hishreyas/TodoApp/blob/main/app/sampledata/app-debug.apk)
+[**Download APK here**](https://github.com/hishreyas/TodoApp/raw/refs/heads/main/app/sampledata/app-debug.apk?raw=true)
