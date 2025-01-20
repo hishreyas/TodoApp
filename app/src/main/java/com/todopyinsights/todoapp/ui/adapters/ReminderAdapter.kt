@@ -24,6 +24,9 @@ class ReminderAdapter(
             binding.tvDateTime.text = reminderData.dateTime
             binding.tvRecurrence.text = reminderData.recurrence
 
+            binding.root.contentDescription = "Reminder title: ${reminderData.title}, Description: ${reminderData.description}"
+
+
             // Differentiate API reminderData with a label or icon
             if (reminderData.isFromApi) {
                 binding.tvSource.text = "Remote"
@@ -32,14 +35,12 @@ class ReminderAdapter(
                 binding.tvSource.text = "Local"
                 binding.tvSource.setBackgroundResource(R.drawable.local_reminder_background)
             }
-            binding.btnTts.setOnClickListener {
-                listener.onTtsClicked(reminderData.title, reminderData.description)
-            }
+
             binding.btnDelete.setOnClickListener {
                 listener.onDeleteReminderClicked(reminderData)
             }
             binding.root.setOnClickListener {
-                if (it.id != binding.btnTts.id && it.id != binding.btnDelete.id) {
+                if ( it.id != binding.btnDelete.id) {
                     listener.onReminderClicked(reminderData)
                 }
             }
@@ -61,7 +62,6 @@ class ReminderAdapter(
     }
 
     interface OnReminderActionListener {
-        fun onTtsClicked(title: String, description: String)
         fun onReminderClicked(reminderData: ReminderData)
         fun onDeleteReminderClicked(reminderData: ReminderData)
     }

@@ -89,6 +89,8 @@
         android:layout_alignParentEnd="true"
         android:orientation="vertical">
 
+        <!--
+
         <ImageButton
         android:id="@+id/btn_tts"
         android:layout_width="40dp"
@@ -97,6 +99,8 @@
         android:src="@drawable/outline_brand_awareness_24"
         android:contentDescription="Announce Reminder" />
 
+
+-->
         <ImageButton
             android:id="@+id/btn_delete"
             android:layout_width="40dp"
