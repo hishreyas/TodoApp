@@ -1,8 +1,10 @@
 package com.todopyinsights.todoapp.ui
 import AddUpdateReminderBottomSheet
 import android.Manifest
+import android.accessibilityservice.AccessibilityService
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,6 +14,7 @@ import android.provider.Settings
 import android.speech.tts.TextToSpeech
 import android.view.View
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -23,6 +26,7 @@ import com.todopyinsights.todoapp.databinding.ActivityMainBinding
 import com.todopyinsights.todoapp.models.ReminderData
 import com.todopyinsights.todoapp.ui.adapters.ReminderAdapter
 import com.todopyinsights.todoapp.utils.NotificationManager
+import com.todopyinsights.todoapp.utils.ReminderAccessibilityService
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,7 +45,6 @@ class MainActivity : AppCompatActivity() ,ReminderAdapter.OnReminderActionListen
 
     private  val reminderViewModel:ReminderViewModel by viewModels()
 
-    private lateinit var tts: TextToSpeech
 
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -56,12 +59,6 @@ class MainActivity : AppCompatActivity() ,ReminderAdapter.OnReminderActionListen
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize TTS
-        tts = TextToSpeech(this) { status ->
-            if (status == TextToSpeech.SUCCESS) {
-                tts.language = Locale.getDefault()
-            }
-        }
         // Set up RecyclerView
         reminderAdapter = ReminderAdapter(reminderDataList,this)
         binding.recyclerView.apply {
@@ -76,6 +73,9 @@ class MainActivity : AppCompatActivity() ,ReminderAdapter.OnReminderActionListen
 
         checkAndRequestNotificationPermission()
         observe()
+        if (!isAccessibilityServiceEnabled(ReminderAccessibilityService::class.java)) {
+            showAccessibilityDialog()
+        }
     }
 
     private fun observe(){
@@ -115,10 +115,6 @@ class MainActivity : AppCompatActivity() ,ReminderAdapter.OnReminderActionListen
         bottomSheet.show(supportFragmentManager, "AddUpdateReminderBottomSheet")
     }
 
-    override fun onTtsClicked(title: String, description: String) {
-        val textToSpeak = "Title: $title. Description: $description"
-        tts.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null)
-    }
 
     override fun onReminderClicked(reminderData: ReminderData) {
         openAddReminderBottomSheet(reminderData)
@@ -163,6 +159,39 @@ class MainActivity : AppCompatActivity() ,ReminderAdapter.OnReminderActionListen
             }
             .setNegativeButton("Cancel", null)
             .show()
+    }
+
+    private fun isAccessibilityServiceEnabled(serviceClass: Class<out AccessibilityService>): Boolean {
+        val expectedComponentName = ComponentName(this, serviceClass)
+        val enabledServicesSetting =
+            Settings.Secure.getString(contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES)
+        val accessibilityEnabled =
+            Settings.Secure.getInt(contentResolver, Settings.Secure.ACCESSIBILITY_ENABLED, 0)
+
+        if (accessibilityEnabled == 1 && enabledServicesSetting != null) {
+            val colonSplitter = enabledServicesSetting.split(":")
+            return colonSplitter.any {
+                ComponentName.unflattenFromString(it)?.equals(expectedComponentName) == true
+            }
+        }
+
+        return false
+    }
+
+    private fun showAccessibilityDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Enable Accessibility Service")
+            .setMessage("To enable the Text-to-Speech feature, please enable the Accessibility Service for this app in your device's settings.")
+            .setPositiveButton("Go to Settings") { _, _ ->
+                openAccessibilitySettings()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun openAccessibilitySettings() {
+        val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+        startActivity(intent)
     }
 
     private fun openAppNotificationSettings() {
